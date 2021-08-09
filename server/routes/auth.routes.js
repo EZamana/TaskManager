@@ -14,7 +14,7 @@ router.post('/registration', [
   try {
     const errors = validationResult(req)
     if (!errors.isEmpty()) {
-      return res.status(400).json({message: 'Incorrect request', errors})
+      return res.status(400).json({errors: errors.array()})
     }
 
     const {email, password, name} = req.body
@@ -32,7 +32,7 @@ router.post('/registration', [
 
   } catch (e) {
     console.log(e)
-    res.send({message: 'Server error'})
+    res.status(500).json({message: 'Server error'})
   }
 })
 
