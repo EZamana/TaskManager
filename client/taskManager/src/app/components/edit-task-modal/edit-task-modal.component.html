@@ -65,19 +65,21 @@
     </div>
     <div class="task-modal__item">
       <p class="modal-subtext">Assignee</p>
-      <p class="modal-text">{{selectedUser.name!}}</p>
+      <p class="modal-text">{{selectedUser?.name}}</p>
     </div>
     <div class="task-modal__item">
       <p class="modal-subtext">Reporter</p>
-      <p class="modal-text">{{taskCreator.name!}}</p>
+      <p class="modal-text">{{taskCreator?.name}}</p>
     </div>
     <div class="task-modal__item">
-      <p class="modal-subtext modal-description">Description</p>
-      <p class="modal-text">{{description}}</p>
+      <p class="modal-subtext">Description</p>
+      <div class="modal-description">
+        <p class="modal-text">{{description}}</p>
+      </div>
     </div>
     <div class="task-modal__item task-modal__btn-container">
       <app-button (click)="closeModal()" [btnText]="'Cancel'" [isColorDefault]="false"></app-button>
-      <app-button (click)="switchMode()" [btnText]="'Edit'"></app-button>
+      <app-button *ngIf="currentUser?._id === selectedUser?._id || currentUser?._id === taskCreator?._id" (click)="switchMode()" [btnText]="'Edit'"></app-button>
     </div>
   </div>
 </ng-template>

@@ -24,6 +24,7 @@ export class EditTaskModalComponent implements OnInit {
   selectedStatus!: TaskStatus
 
   taskCreator!: User
+  currentUser!: User | null
 
   statuses!: TaskStatus[]
   users!: User[]
@@ -34,15 +35,18 @@ export class EditTaskModalComponent implements OnInit {
 
   ngOnInit(): void {
     zip(this.taskService.getTaskStatuses(),
-      this.taskService.getAllUsers()
+      this.taskService.getAllUsers(),
+      this.authService.user
     ).pipe(
-        map(([tasksResponse, usersResponse]) => {
-          let data: {statuses: TaskStatus[], users: User[]} = {statuses: tasksResponse.data, users: usersResponse.data}
+        map(([tasksResponse, usersResponse, user]) => {
+          let data: {statuses: TaskStatus[], users: User[], currentUser: User | null} = {statuses: tasksResponse.data, users: usersResponse.data, currentUser: user}
           return data
         })
     ).subscribe(data => {
       this.users = data.users
       this.statuses = data.statuses
+      this.currentUser = data.currentUser
+
 
       this.users.forEach(user => {
         if (user._id === this.modalData.task.assignee_id) {

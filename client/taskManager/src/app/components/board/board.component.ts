@@ -4,10 +4,11 @@ import {CdkDragDrop, moveItemInArray, transferArrayItem, copyArrayItem} from '@a
 import {Task} from "../../models/task";
 import {TaskStatus} from "../../models/task-status";
 import {User} from "../../models/user";
-import {switchMap, map} from 'rxjs/operators';
+import {map} from 'rxjs/operators';
 import { zip } from 'rxjs';
 import {MatDialog} from '@angular/material/dialog';
 import {CreateTaskModalComponent} from "../create-task-modal/create-task-modal.component";
+import {AuthService} from "../../services/auth.service";
 
 @Component({
   selector: 'app-board',
@@ -16,14 +17,17 @@ import {CreateTaskModalComponent} from "../create-task-modal/create-task-modal.c
 })
 export class BoardComponent implements OnInit {
   tasksData!: TaskStatus[]
+  currentUser!: User | null
 
-  constructor(private taskService: TaskService, public modal: MatDialog) {
+  constructor(private taskService: TaskService, public modal: MatDialog, private authService: AuthService) {
   }
 
   ngOnInit(): void {
-    this.updateBoard()
+    this.authService.user.subscribe(user => {
+      this.currentUser = user
+    })
 
-    console.log('1')
+    this.updateBoard()
   }
 
   drop(event: CdkDragDrop<Task[]>) {
