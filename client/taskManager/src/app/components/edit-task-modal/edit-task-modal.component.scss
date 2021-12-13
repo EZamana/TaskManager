@@ -1,0 +1,50 @@
+.task-modal {
+  min-width: 300px;
+
+  padding: 15px;
+
+  &__title {
+    margin: 0;
+  }
+
+  &__item {
+    width: 300px;
+    margin: 20px 0;
+
+    &_input, &_select {
+      width: inherit;
+    }
+
+    &_textarea {
+      width: inherit;
+
+      textarea {
+        height: 150px;
+      }
+    }
+  }
+
+  &__btn-container {
+    display: flex;
+    justify-content: space-between;
+  }
+}
+
+::ng-deep .edit-modal {
+  mat-dialog-container {
+    padding: 0;
+  }
+}
+
+.modal-text {
+  margin-top: 5px;
+}
+
+.modal-subtext {
+  font-size: 13px;
+  margin: 0;
+}
+
+.modal-description {
+  max-height: 500px;
+}

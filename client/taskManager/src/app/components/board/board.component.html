@@ -1,0 +1,18 @@
+<div class="board">
+  <div class="board-header-row">
+    <div class="board-header-row__container basic-container ">
+      <a href="" class="board-header-row__link">Users list</a>
+    </div>
+  </div>
+  <div class="board-items-row basic-container">
+    <app-button [isHeightDefault]="false" [isColorDefault]="false" [btnText]="'Switch to list'"></app-button>
+    <app-button [isHeightDefault]="false" [btnText]="'New task'" (click)="openCreateTaskModal()"></app-button>
+  </div>
+  <div class="board-tasks-container" cdkDropListGroup>
+    <app-board-column *ngFor="let item of tasksData" [columnTitle]="item.title" [tasksCounter]="item.tasks!.length">
+      <div class="board-tasks-list" [cdkDropListData]="item.tasks!" (cdkDropListDropped)="drop($event)" cdkDropList>
+        <app-board-task *ngFor="let task of item.tasks" [task]="task" cdkDrag></app-board-task>
+      </div>
+    </app-board-column>
+  </div>
+</div>

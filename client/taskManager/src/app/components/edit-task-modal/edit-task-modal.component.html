@@ -1,0 +1,83 @@
+<ng-template [ngIf]="isEditMode">
+  <div class="task-modal">
+    <div class="task-modal__item task-modal__btn-container">
+      <h3 class="task-modal__title">Edit task</h3>
+      <app-button (click)="deleteTask()" [btnText]="'Delete'"></app-button>
+    </div>
+    <div class="task-modal__item">
+      <mat-form-field class="task-modal__item_input" appearance="fill">
+        <mat-label>Title</mat-label>
+        <input type="text" matInput [formControl]="titleFormControl" [(ngModel)]='title'>
+        <mat-error *ngIf="titleFormControl.hasError('required')">
+          Title is <strong>required</strong>
+        </mat-error>
+        <mat-error *ngIf="titleFormControl.errors?.['minlength']">
+          Title should be at least 3 characters long
+        </mat-error>
+      </mat-form-field>
+    </div>
+    <div class="task-modal__item">
+      <mat-form-field class="task-modal__item_textarea" appearance="fill">
+        <mat-label>Description</mat-label>
+        <textarea type="text" matInput [formControl]="descriptionFormControl" [(ngModel)]='description'></textarea>
+        <mat-error *ngIf="descriptionFormControl.hasError('required')">
+          Title is <strong>required</strong>
+        </mat-error>
+        <mat-error *ngIf="descriptionFormControl.errors?.['minlength']">
+          Title should be at least 3 characters long
+        </mat-error>
+      </mat-form-field>
+    </div>
+    <div class="task-modal__item">
+      <mat-form-field class="task-modal__item_select" appearance="fill">
+        <mat-label>Assignee</mat-label>
+        <mat-select [(value)]="selectedUser" [formControl]="assigneeFormControl">
+          <mat-option *ngFor="let user of users" [value]="user">{{user.name}}</mat-option>
+        </mat-select>
+        <mat-error *ngIf="assigneeFormControl.hasError('required')">
+          Assignee is <strong>required</strong>
+        </mat-error>
+      </mat-form-field>
+    </div>
+    <div class="task-modal__item">
+      <mat-form-field class="task-modal__item_select" appearance="fill">
+        <mat-label>Status</mat-label>
+        <mat-select [(value)]="selectedStatus" [formControl]="statusFormControl">
+          <mat-option *ngFor="let status of statuses" [value]="status">{{status.title}}</mat-option>
+        </mat-select>
+        <mat-error *ngIf="assigneeFormControl.hasError('required')">
+          Assignee is <strong>required</strong>
+        </mat-error>
+      </mat-form-field>
+    </div>
+    <div class="task-modal__item task-modal__btn-container">
+      <app-button (click)="closeModal()" [btnText]="'Cancel'" [isColorDefault]="false"></app-button>
+      <app-button (click)="editTask()" [btnText]="'Submit'" [class.btnDisable]="titleFormControl.errors || descriptionFormControl.errors || assigneeFormControl.errors || statusFormControl.errors"></app-button>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template [ngIf]="!isEditMode">
+  <div class="task-modal">
+    <div class="task-modal__item">
+      <p class="modal-subtext">Title</p>
+      <h3 class="task-modal__title">{{title}}</h3>
+    </div>
+    <div class="task-modal__item">
+      <p class="modal-subtext">Assignee</p>
+      <p class="modal-text">{{selectedUser.name!}}</p>
+    </div>
+    <div class="task-modal__item">
+      <p class="modal-subtext">Reporter</p>
+      <p class="modal-text">{{taskCreator.name!}}</p>
+    </div>
+    <div class="task-modal__item">
+      <p class="modal-subtext modal-description">Description</p>
+      <p class="modal-text">{{description}}</p>
+    </div>
+    <div class="task-modal__item task-modal__btn-container">
+      <app-button (click)="closeModal()" [btnText]="'Cancel'" [isColorDefault]="false"></app-button>
+      <app-button (click)="switchMode()" [btnText]="'Edit'"></app-button>
+    </div>
+  </div>
+</ng-template>

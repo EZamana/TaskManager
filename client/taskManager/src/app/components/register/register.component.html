@@ -1,0 +1,42 @@
+<h2 class="auth-title">Please, register</h2>
+<form class="auth-form">
+  <div class="auth-form__item">
+    <mat-form-field class="auth-form__item_input" appearance="fill">
+      <mat-label>Name</mat-label>
+      <input type="text" matInput [formControl]="nameFormControl" [(ngModel)] = 'name'>
+      <mat-error *ngIf="nameFormControl.hasError('required')">
+        Name is <strong>required</strong>
+      </mat-error>
+    </mat-form-field>
+  </div>
+  <div class="auth-form__item">
+    <mat-form-field class="auth-form__item_input" appearance="fill">
+      <mat-label>Email</mat-label>
+      <input type="email" matInput [formControl]="emailFormControl" [(ngModel)] = 'email'>
+      <mat-error *ngIf="emailFormControl.hasError('required')">
+        Email is <strong>required</strong>
+      </mat-error>
+      <mat-error *ngIf="emailFormControl.errors?.pattern && !emailFormControl.hasError('required')">
+        Please enter a valid email address
+      </mat-error>
+    </mat-form-field>
+  </div>
+  <div class="auth-form__item">
+    <mat-form-field class="auth-form__item_input" appearance="fill">
+      <mat-label>Password</mat-label>
+      <input type="password" matInput [formControl]="passwordFormControl" [(ngModel)] = 'password'>
+      <mat-error *ngIf="passwordFormControl.errors?.minlength || passwordFormControl.errors?.maxlength && !passwordFormControl.hasError('required')">
+        Password should be longer than 3 and shorter than 12
+      </mat-error>
+      <mat-error *ngIf="passwordFormControl.hasError('required')">
+        Password is <strong>required</strong>
+      </mat-error>
+    </mat-form-field>
+  </div>
+  <div class="auth-form__item">
+    <app-button [btnText]="'Register'" (click)="register()" [class.btnDisable]="passwordFormControl.errors || emailFormControl.errors || nameFormControl.errors"></app-button>
+  </div>
+  <div class="auth-form__item">
+    <app-message-alert [message]="this.errMessage" (alertClosed)="removeMessage()"></app-message-alert>
+  </div>
+</form>

@@ -1,0 +1,29 @@
+:host {
+  display: block;
+}
+
+.board-task {
+  display: block;
+  background-color: white;
+  padding: 15px;
+  border-radius: 5px;
+  border: 1px solid #C4C4C4;
+
+  &__title {
+    font-size: 16px;
+  }
+
+  &__items {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  &__description {
+    font-size: 15px;
+  }
+}
+
+hr {
+  border-top: 1px solid #F0F4F6;
+  margin: 15px 0;
+}

@@ -1,0 +1,93 @@
+
+// Custom Theming for Angular Material
+// For more information: https://material.angular.io/guide/theming
+@use '~@angular/material' as mat;
+// Plus imports for other components in your app.
+
+// Include the common styles for Angular Material. We include this here so that you only
+// have to load a single css file for Angular Material in your app.
+// Be sure that you only ever include this mixin once!
+@include mat.core();
+
+// Define the palettes for your theme using the Material Design palettes available in palette.scss
+// (imported above). For each palette, you can optionally specify a default, lighter, and darker
+// hue. Available color palettes: https://material.io/design/color/
+$taskManager-primary: mat.define-palette(mat.$indigo-palette);
+$taskManager-accent: mat.define-palette(mat.$pink-palette, A200, A100, A400);
+
+// The warn palette is optional (defaults to red).
+$taskManager-warn: mat.define-palette(mat.$red-palette);
+
+// Create the theme object. A theme consists of configurations for individual
+// theming systems such as "color" or "typography".
+$taskManager-theme: mat.define-light-theme((
+  color: (
+    primary: $taskManager-primary,
+    accent: $taskManager-accent,
+    warn: $taskManager-warn,
+  )
+));
+
+// Include theme styles for core and each component used in your app.
+// Alternatively, you can import and @include the theme mixins for each component
+// that you are using.
+@include mat.all-component-themes($taskManager-theme);
+
+/* You can add global styles to this file, and also import other style files */
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+.basic-container {
+  max-width: 1200px;
+  height: inherit;
+  display: flex;
+  align-items: center;
+  margin: 0 auto;
+}
+
+.auth-form {
+  width: 300px;
+  margin: 0 auto;
+
+  &__item {
+    display: flex;
+    width: inherit;
+    margin: 20px 0;
+
+    &_input {
+      width: inherit;
+    }
+  }
+
+  app-button {
+    margin: 0 auto;
+  }
+}
+
+.auth-title {
+  text-align: center;
+  font-weight: 500;
+}
+
+.btnDisable {
+  pointer-events: none;
+  opacity: 0.5;
+}
+
+app-message-alert {
+  width: inherit;
+}
+
+a {
+  text-decoration: none;
+}
+
+.icon-character {
+  position: relative;
+  line-height: 1.5;
+  display: inline-block;
+  margin: 0;
+  vertical-align: middle;
+}
+

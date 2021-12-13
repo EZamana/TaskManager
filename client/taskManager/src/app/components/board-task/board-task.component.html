@@ -1,0 +1,9 @@
+<div class="board-task">
+  <h3 class="board-task__title">{{task.title}}</h3>
+  <p class="board-task__description">{{task.description | truncate : 120: true}}</p>
+  <hr>
+  <div class="board-task__items">
+    <app-button [btnText]="'View task'" (click)="openEditTaskModal()"></app-button>
+    <app-user-icon [userName]="task.assignee_as_user!.name" [elemWidth]="30"></app-user-icon>
+  </div>
+</div>

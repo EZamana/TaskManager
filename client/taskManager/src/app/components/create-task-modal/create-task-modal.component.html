@@ -1,0 +1,44 @@
+<div class="task-modal">
+  <div class="task-modal__item">
+    <h3 class="task-modal__title">Create task</h3>
+  </div>
+  <div class="task-modal__item">
+    <mat-form-field class="task-modal__item_input" appearance="fill">
+      <mat-label>Title</mat-label>
+      <input type="text" matInput [formControl]="titleFormControl" [(ngModel)]='title' (ngModelChange)="checkIsTitleFilled()" (change)="checkIsTitleFilled()">
+      <mat-error *ngIf="titleFormControl.hasError('required')">
+        Title is <strong>required</strong>
+      </mat-error>
+      <mat-error *ngIf="titleFormControl.errors?.['minlength']">
+        Title should be at least 3 characters long
+      </mat-error>
+    </mat-form-field>
+    <div class="task-modal__item">
+      <mat-form-field class="task-modal__item_textarea" appearance="fill">
+        <mat-label>Description</mat-label>
+        <textarea type="text" matInput [formControl]="descriptionFormControl" [(ngModel)]='description'></textarea>
+        <mat-error *ngIf="descriptionFormControl.hasError('required')">
+          Title is <strong>required</strong>
+        </mat-error>
+        <mat-error *ngIf="descriptionFormControl.errors?.['minlength']">
+          Title should be at least 3 characters long
+        </mat-error>
+      </mat-form-field>
+      <div class="task-modal__item">
+        <mat-form-field class="task-modal__item_select" appearance="fill">
+          <mat-label>Assignee</mat-label>
+          <mat-select [(value)]="selectedUser" [formControl]="assigneeFormControl">
+            <mat-option *ngFor="let user of users" [value]="user">{{user.name}}</mat-option>
+          </mat-select>
+          <mat-error *ngIf="assigneeFormControl.hasError('required')">
+            Assignee is <strong>required</strong>
+          </mat-error>
+        </mat-form-field>
+      </div>
+      <div class="task-modal__item task-modal__btn-container">
+        <app-button (click)="closeModal()" [btnText]="'Cancel'" [isColorDefault]="false"></app-button>
+        <app-button (click)="submit()" [btnText]="'Submit'" [class.btnDisable]="titleFormControl.errors || descriptionFormControl.errors || assigneeFormControl.errors"></app-button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,16 @@
+<div class="header">
+  <div class="basic-container header__container">
+    <div *ngIf='!user'>
+      <app-button [btnText]="'Login'" [isColorDefault]="false" [isHeightDefault]="false" (click)="toLogin()"></app-button>
+      <app-button [btnText]="'Register'" [isColorDefault]="false" [isHeightDefault]="false" (click)="toRegister()"></app-button>
+    </div>
+    <div class="buttons-container" *ngIf="user">
+      <p class="header__text">{{userName}}</p>
+      <app-user-icon [userName]="userName"></app-user-icon>
+      <app-button [btnText]="'Logout'" [isColorDefault]="false" [isHeightDefault]="false" (click)="logout()"></app-button>
+    </div>
+  </div>
+</div>
+
+
+

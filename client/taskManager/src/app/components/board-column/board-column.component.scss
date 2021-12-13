@@ -1,0 +1,33 @@
+:host {
+  display: block;
+}
+
+.board-column {
+  background-color: #F0F4F6;
+  width: 320px;
+  padding: 15px;
+  border-radius: 5px;
+  color: black;
+  text-align: left;
+
+  &__items {
+    display: flex;
+    align-items: center;
+  }
+
+  &__counter {
+    width: 35px;
+    height: 35px;
+    margin-left: 20px;
+    line-height: 35px;
+    background-color: #DADFEA;
+    border-radius: 50%;
+    font-size: 15px;
+    font-weight: bold;
+    text-align: center;
+  }
+
+  &__title {
+    font-size: 16px;
+  }
+}

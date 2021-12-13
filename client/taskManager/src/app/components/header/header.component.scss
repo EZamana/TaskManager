@@ -1,0 +1,25 @@
+.header {
+  background-color: #3A6ED4;
+  height: 68px;
+
+  &__container {
+    flex-direction: row-reverse;
+  }
+
+  &__text {
+    color: white;
+    margin-right: 10px;
+  }
+}
+
+app-button {
+  margin-left: 20px;
+}
+
+.buttons-container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+
