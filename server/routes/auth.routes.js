@@ -19,6 +19,8 @@ router.post('/registration', [
 
     const {email, password, name} = req.body
 
+    req.header = {}
+
     const candidate = await User.findOne({email})
     if (candidate) {
       return res.status(400).json({message: `Email with ${email} already exist`})
@@ -28,7 +30,10 @@ router.post('/registration', [
     const user = new User({email, password: hashPassword, name})
     await user.save()
 
-    return res.json({message: 'User was created successfully'})
+    const createdUser = await User.findOne({email})
+    const token = jwt.sign({id: createdUser.id}, config.get("secretKey"), {expiresIn: '1d'})
+
+    return res.json({message: 'User was created successfully', data: {token, _id: createdUser.id, email: createdUser.email, name: createdUser.name}})
 
   } catch (e) {
     console.log(e)
@@ -42,7 +47,7 @@ router.post('/login',async (req, res) => {
 
     const user = await User.findOne({email})
     if (!user) {
-      return res.status(404).json({message: `Incorrect email`})
+      return res.status(400).json({message: `Incorrect email`})
     }
 
     const isPasswordValid = bcrypt.compareSync(password, user.password)
@@ -51,11 +56,27 @@ router.post('/login',async (req, res) => {
     }
 
     const token = jwt.sign({id: user.id}, config.get("secretKey"), {expiresIn: '1d'})
-    return res.json({token})
+    return res.json({data: {token, _id: user.id, email: user.email, name: user.name}})
 
   } catch (e) {
     console.log(e)
     res.send({message: 'Server error'})
+  }
+})
+
+router.get('/getAllUsers', async (req, res) => {
+  try {
+    let allUsers = await User.find({})
+
+    allUsers = allUsers.map(user => {
+      return {_id: user._id, email: user.email, name: user.name}
+    })
+
+    return res.json({data: allUsers})
+
+  } catch (e) {
+    console.log(e)
+    res.status(500).json('Server error')
   }
 })
 

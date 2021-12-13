@@ -40,5 +40,4 @@ router.get('/getAllTaskStatuses', async (req, res) => {
   }
 })
 
-
 module.exports = router
