@@ -3,6 +3,7 @@ import {FormControl, Validators} from '@angular/forms';
 import {TaskService} from "../../services/task.service";
 import {User} from "../../models/user";
 import {AuthService} from "../../services/auth.service";
+import {BoardService} from "../../services/board.service";
 import {map} from 'rxjs/operators';
 import {MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
 import {zip} from "rxjs";
@@ -22,7 +23,8 @@ export class CreateTaskModalComponent implements OnInit {
   users!: User[]
 
   constructor(private taskService: TaskService, private authService: AuthService,
-              public modalRef: MatDialogRef<CreateTaskModalComponent>) {}
+              public modalRef: MatDialogRef<CreateTaskModalComponent>,
+              private boardService: BoardService) {}
 
   ngOnInit(): void {
     zip(this.authService.user,
@@ -82,6 +84,7 @@ export class CreateTaskModalComponent implements OnInit {
       console.log(value.message)
       console.log(value.data)
       this.closeModal()
+      this.boardService.updateBoard()
     })
   }
 

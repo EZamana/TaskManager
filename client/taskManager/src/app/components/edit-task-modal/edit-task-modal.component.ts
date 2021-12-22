@@ -8,6 +8,7 @@ import {map} from 'rxjs/operators';
 import {MatDialogRef, MAT_DIALOG_DATA} from "@angular/material/dialog";
 import {zip} from "rxjs";
 import {Task} from "../../models/task";
+import {BoardService} from "../../services/board.service";
 
 @Component({
   selector: 'app-edit-task-modal',
@@ -20,8 +21,8 @@ export class EditTaskModalComponent implements OnInit {
   taskId: string = this.modalData.task._id
   title: string = this.modalData.task.title
   description: string = this.modalData.task.description
-  selectedUser!: User
-  selectedStatus!: TaskStatus
+  currentAssignee!: User
+  currentStatus!: TaskStatus
 
   taskCreator!: User
   currentUser!: User | null
@@ -31,7 +32,8 @@ export class EditTaskModalComponent implements OnInit {
 
   constructor(private taskService: TaskService, private authService: AuthService,
               public editModalRef: MatDialogRef<EditTaskModalComponent>,
-              @Inject(MAT_DIALOG_DATA) public modalData: {task: Task}) {}
+              @Inject(MAT_DIALOG_DATA) public modalData: {task: Task},
+              private boardService: BoardService) {}
 
   ngOnInit(): void {
     zip(this.taskService.getTaskStatuses(),
@@ -50,7 +52,7 @@ export class EditTaskModalComponent implements OnInit {
 
       this.users.forEach(user => {
         if (user._id === this.modalData.task.assignee_id) {
-          this.selectedUser = user
+          this.currentAssignee = user
           this.assigneeFormControl.setValue(user)
         }
 
@@ -61,7 +63,7 @@ export class EditTaskModalComponent implements OnInit {
 
       this.statuses.forEach(status => {
         if (status._id === this.modalData.task.status_id) {
-          this.selectedStatus = status
+          this.currentStatus = status
           this.statusFormControl.setValue(status)
         }
       })
@@ -87,10 +89,11 @@ export class EditTaskModalComponent implements OnInit {
   ])
 
   editTask() {
-    this.taskService.updateTask(this.taskId, this.title, this.description, this.selectedStatus._id, this.selectedUser._id)
+    this.taskService.updateTask(this.taskId, this.title, this.description, this.currentStatus._id, this.currentAssignee._id)
       .subscribe(response => {
         console.log(response.data, response.message)
         this.closeModal()
+        this.boardService.updateBoard()
       })
   }
 
@@ -98,11 +101,12 @@ export class EditTaskModalComponent implements OnInit {
     this.taskService.deleteTask(this.taskId).subscribe(response => {
       console.log(response.data, response.message)
       this.closeModal()
+      this.boardService.updateBoard()
     })
   }
 
   closeModal() {
-    this.editModalRef.close('result111')
+    this.editModalRef.close()
   }
 
   switchMode() {

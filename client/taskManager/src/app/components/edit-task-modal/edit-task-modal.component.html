@@ -31,7 +31,7 @@
     <div class="task-modal__item">
       <mat-form-field class="task-modal__item_select" appearance="fill">
         <mat-label>Assignee</mat-label>
-        <mat-select [(value)]="selectedUser" [formControl]="assigneeFormControl">
+        <mat-select [(value)]="currentAssignee" [formControl]="assigneeFormControl">
           <mat-option *ngFor="let user of users" [value]="user">{{user.name}}</mat-option>
         </mat-select>
         <mat-error *ngIf="assigneeFormControl.hasError('required')">
@@ -42,7 +42,7 @@
     <div class="task-modal__item">
       <mat-form-field class="task-modal__item_select" appearance="fill">
         <mat-label>Status</mat-label>
-        <mat-select [(value)]="selectedStatus" [formControl]="statusFormControl">
+        <mat-select [(value)]="currentStatus" [formControl]="statusFormControl">
           <mat-option *ngFor="let status of statuses" [value]="status">{{status.title}}</mat-option>
         </mat-select>
         <mat-error *ngIf="assigneeFormControl.hasError('required')">
@@ -65,11 +65,15 @@
     </div>
     <div class="task-modal__item">
       <p class="modal-subtext">Assignee</p>
-      <p class="modal-text">{{selectedUser?.name}}</p>
+      <p class="modal-text">{{currentAssignee?.name}}</p>
     </div>
     <div class="task-modal__item">
       <p class="modal-subtext">Reporter</p>
       <p class="modal-text">{{taskCreator?.name}}</p>
+    </div>
+    <div class="task-modal__item">
+      <p class="modal-subtext">Status</p>
+      <p class="modal-text">{{currentStatus?.title}}</p>
     </div>
     <div class="task-modal__item">
       <p class="modal-subtext">Description</p>
@@ -79,7 +83,7 @@
     </div>
     <div class="task-modal__item task-modal__btn-container">
       <app-button (click)="closeModal()" [btnText]="'Cancel'" [isColorDefault]="false"></app-button>
-      <app-button *ngIf="currentUser?._id === selectedUser?._id || currentUser?._id === taskCreator?._id" (click)="switchMode()" [btnText]="'Edit'"></app-button>
+      <app-button *ngIf="currentUser?._id === currentAssignee?._id || currentUser?._id === taskCreator?._id" (click)="switchMode()" [btnText]="'Edit'"></app-button>
     </div>
   </div>
 </ng-template>

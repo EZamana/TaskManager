@@ -21,10 +21,6 @@ export class AuthService {
     this.user = this.userSubject.asObservable()
   }
 
-  public get userValue(): User | null {
-    return this.userSubject.value
-  }
-
   login(email: string, password: string) {
     return this.http.post<Response>(`http://localhost:${environment.apiPort}/api/auth/login`, {email, password})
       .pipe(map(user => {

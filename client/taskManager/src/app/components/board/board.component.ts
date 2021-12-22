@@ -1,5 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {TaskService} from "../../services/task.service";
+import {BoardService} from "../../services/board.service";
 import {CdkDragDrop, moveItemInArray, transferArrayItem, copyArrayItem} from '@angular/cdk/drag-drop';
 import {Task} from "../../models/task";
 import {TaskStatus} from "../../models/task-status";
@@ -17,14 +18,25 @@ import {AuthService} from "../../services/auth.service";
 })
 export class BoardComponent implements OnInit {
   tasksData!: TaskStatus[]
+  previousTasksData!: TaskStatus[]
   currentUser!: User | null
 
-  constructor(private taskService: TaskService, public modal: MatDialog, private authService: AuthService) {
-  }
+  constructor(private taskService: TaskService,
+              public modal: MatDialog,
+              private authService: AuthService,
+              private boardService: BoardService) {}
 
   ngOnInit(): void {
     this.authService.user.subscribe(user => {
       this.currentUser = user
+    })
+
+    this.boardService.boardUpdate.subscribe(value => {
+      if (value === 'update') {
+        this.updateBoard()
+      } else if (value === 'close') {
+        this.closeAllModals()
+      }
     })
 
     this.updateBoard()
@@ -40,7 +52,20 @@ export class BoardComponent implements OnInit {
         event.previousIndex,
         event.currentIndex,
       );
+
+      let indexOfCurrCont = parseInt(event.container.id)
+      let draggedTask = event.container.data[event.currentIndex]
+
+      this.taskService.updateTask(draggedTask._id, draggedTask.title, draggedTask.description, this.tasksData![indexOfCurrCont]._id, draggedTask.assignee_id)
+        .subscribe(response => {
+          console.log(response)
+          this.updateBoard()
+        })
     }
+  }
+
+  indexToString(index: number) {
+    return index.toString()
   }
 
   /*keepOriginalOrder(a: any, b: any) {
@@ -83,17 +108,16 @@ export class BoardComponent implements OnInit {
     ).subscribe(data => {
       this.tasksData = data
     })
-
-
   }
 
   openCreateTaskModal() {
-    const modalRef = this.modal.open(CreateTaskModalComponent, {
+    this.modal.open(CreateTaskModalComponent, {
       data: {},
       panelClass: 'create-modal'
     })
-    modalRef.afterClosed().subscribe(result => {
-      console.log(result)
-    })
+  }
+
+  closeAllModals() {
+    this.modal.closeAll()
   }
 }
