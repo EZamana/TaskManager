@@ -3,7 +3,9 @@
   height: 68px;
 
   &__container {
-    flex-direction: row-reverse;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
   }
 
   &__text {
@@ -14,6 +16,12 @@
 
 app-button {
   margin-left: 20px;
+}
+
+.board-icon {
+  cursor: pointer;
+  width: 40px;
+  height: 40px;
 }
 
 .buttons-container {

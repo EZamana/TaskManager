@@ -81,14 +81,12 @@ export class CreateTaskModalComponent implements OnInit {
 
   submit() {
     this.taskService.createTask(this.title, this.description, this.selectedUser._id).subscribe(value => {
-      console.log(value.message)
-      console.log(value.data)
       this.closeModal()
       this.boardService.updateBoard()
     })
   }
 
   closeModal() {
-    this.modalRef.close('result111')
+    this.modalRef.close()
   }
 }

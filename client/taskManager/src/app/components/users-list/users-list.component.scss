@@ -1,0 +1,20 @@
+.users-list {
+  padding: 20px 0;
+  display: flex;
+  flex-wrap: wrap;
+
+  &__item {
+    margin-right: 20px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+
+    app-user-icon {
+      margin-right: 10px;
+    }
+  }
+
+  &__text {
+    margin: 0 auto;
+  }
+}

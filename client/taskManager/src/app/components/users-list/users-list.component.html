@@ -1,0 +1,10 @@
+<div *ngIf="allUsers.length > 0" class="basic-container users-list">
+  <div *ngFor="let user of allUsers" class="users-list__item">
+    <app-user-icon [userName]="user.name"></app-user-icon>
+    <p class="users-list__text">{{user.name}}</p>
+  </div>
+</div>
+
+<div *ngIf="allUsers.length === 0" class="basic-container users-list">
+  <p class="users-list__text">No data</p>
+</div>

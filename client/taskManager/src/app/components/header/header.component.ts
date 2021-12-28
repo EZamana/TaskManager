@@ -32,6 +32,10 @@ export class HeaderComponent implements OnInit {
     this.router.navigate(['/register'])
   }
 
+  toHome() {
+    this.router.navigate(['/'])
+  }
+
   logout() {
     this.authService.logout()
   }

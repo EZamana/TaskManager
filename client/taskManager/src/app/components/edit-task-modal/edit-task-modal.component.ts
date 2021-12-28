@@ -49,7 +49,6 @@ export class EditTaskModalComponent implements OnInit {
       this.statuses = data.statuses
       this.currentUser = data.currentUser
 
-
       this.users.forEach(user => {
         if (user._id === this.modalData.task.assignee_id) {
           this.currentAssignee = user
@@ -91,7 +90,6 @@ export class EditTaskModalComponent implements OnInit {
   editTask() {
     this.taskService.updateTask(this.taskId, this.title, this.description, this.currentStatus._id, this.currentAssignee._id)
       .subscribe(response => {
-        console.log(response.data, response.message)
         this.closeModal()
         this.boardService.updateBoard()
       })
@@ -99,7 +97,6 @@ export class EditTaskModalComponent implements OnInit {
 
   deleteTask() {
     this.taskService.deleteTask(this.taskId).subscribe(response => {
-      console.log(response.data, response.message)
       this.closeModal()
       this.boardService.updateBoard()
     })

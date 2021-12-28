@@ -1,15 +1,16 @@
 import {Component, OnInit} from '@angular/core';
 import {TaskService} from "../../services/task.service";
 import {BoardService} from "../../services/board.service";
-import {CdkDragDrop, moveItemInArray, transferArrayItem, copyArrayItem} from '@angular/cdk/drag-drop';
+import {CdkDragDrop, moveItemInArray, transferArrayItem} from '@angular/cdk/drag-drop';
 import {Task} from "../../models/task";
 import {TaskStatus} from "../../models/task-status";
 import {User} from "../../models/user";
 import {map} from 'rxjs/operators';
-import { zip } from 'rxjs';
+import {zip} from 'rxjs';
 import {MatDialog} from '@angular/material/dialog';
 import {CreateTaskModalComponent} from "../create-task-modal/create-task-modal.component";
 import {AuthService} from "../../services/auth.service";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-board',
@@ -20,11 +21,16 @@ export class BoardComponent implements OnInit {
   tasksData!: TaskStatus[]
   previousTasksData!: TaskStatus[]
   currentUser!: User | null
+  allTasks!: Task[]
+
+  isBoardState: boolean = true
 
   constructor(private taskService: TaskService,
               public modal: MatDialog,
               private authService: AuthService,
-              private boardService: BoardService) {}
+              private boardService: BoardService,
+              private router: Router) {
+  }
 
   ngOnInit(): void {
     this.authService.user.subscribe(user => {
@@ -57,8 +63,7 @@ export class BoardComponent implements OnInit {
       let draggedTask = event.container.data[event.currentIndex]
 
       this.taskService.updateTask(draggedTask._id, draggedTask.title, draggedTask.description, this.tasksData![indexOfCurrCont]._id, draggedTask.assignee_id)
-        .subscribe(response => {
-          console.log(response)
+        .subscribe(() => {
           this.updateBoard()
         })
     }
@@ -82,7 +87,7 @@ export class BoardComponent implements OnInit {
         let users: User[] = usersResponse.data
         let statusesInOrder: TaskStatus[] = statusesResponse.data.sort((a: TaskStatus, b: TaskStatus) => a.priority - b.priority)
 
-        let tasksData: TaskStatus[] = []
+        let data: {allTasks: Task[], tasksData: TaskStatus[]} = {allTasks: [], tasksData: []}
 
         let tasksWithAssigneeAsUser: Task[] = tasks.map(task => {
           users.forEach(user => {
@@ -93,7 +98,9 @@ export class BoardComponent implements OnInit {
           return task
         })
 
-        tasksData = statusesInOrder.map((status, item) => {
+        data.allTasks = tasksWithAssigneeAsUser
+
+        data.tasksData = statusesInOrder.map((status) => {
           status.tasks = []
           tasksWithAssigneeAsUser.forEach(task => {
             if (task.status_id === status._id) {
@@ -103,11 +110,29 @@ export class BoardComponent implements OnInit {
           return status
         })
 
-        return tasksData
+        return data
       })
     ).subscribe(data => {
-      this.tasksData = data
+      this.previousTasksData = this.tasksData
+      this.allTasks = data.allTasks
+
+      this.tasksData = data.tasksData.map((status, index) => {
+        if (this.previousTasksData) {
+          status.tasks = this.compareTasksData(this.previousTasksData[index].tasks!, status.tasks!)
+          return status
+        } else {
+          return status
+        }
+      })
     })
+  }
+
+  compareTasksData(previousState: Task[], currentState: Task[]) {
+    let previousValidTask = previousState.filter(task => currentState.findIndex(currTask => task._id === currTask._id) >= 0)
+
+    let newTasks = currentState.filter(task => previousValidTask.findIndex(prevTask => task._id === prevTask._id) === -1)
+
+    return previousValidTask.concat(newTasks)
   }
 
   openCreateTaskModal() {
@@ -119,5 +144,13 @@ export class BoardComponent implements OnInit {
 
   closeAllModals() {
     this.modal.closeAll()
+  }
+
+  toUsersList() {
+    this.router.navigate(['/usersList'])
+  }
+
+  changeBoardState() {
+    this.isBoardState = !this.isBoardState
   }
 }

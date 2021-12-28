@@ -1,18 +1,29 @@
 <div class="board">
   <div class="board-header-row">
-    <div class="board-header-row__container basic-container ">
-      <a href="" class="board-header-row__link">Users list</a>
+    <div class="board-header-row__container basic-container">
+      <p class="board-header-row__link" (click)="toUsersList()">Users list</p>
     </div>
   </div>
   <div class="board-items-row basic-container">
-    <app-button [isHeightDefault]="false" [isColorDefault]="false" [btnText]="'Switch to list'"></app-button>
-    <app-button [isHeightDefault]="false" [btnText]="'New task'" (click)="openCreateTaskModal()"></app-button>
+    <div>
+      <app-button *ngIf="isBoardState" [isHeightDefault]="false" [isColorDefault]="false" [btnText]="'Switch to list'" (click)="changeBoardState()"></app-button>
+      <app-button *ngIf="!isBoardState" [isHeightDefault]="false" [isColorDefault]="false" [btnText]="'Switch to board'" (click)="changeBoardState()"></app-button>
+    </div>
+    <app-button *ngIf="currentUser" [isHeightDefault]="false" [btnText]="'New task'" (click)="openCreateTaskModal()"></app-button>
   </div>
-  <div class="board-tasks-container" cdkDropListGroup>
+  <div *ngIf="isBoardState" class="board-tasks-container" cdkDropListGroup>
     <app-board-column *ngFor="let item of tasksData; let i=index" [columnTitle]="item.title" [tasksCounter]="item.tasks!.length">
       <div [id]="indexToString(i)" class="board-tasks-list" [cdkDropListData]="item.tasks!" (cdkDropListDropped)="drop($event)" cdkDropList>
-        <app-board-task *ngFor="let task of item.tasks" [task]="task" [authUser]="currentUser" cdkDrag></app-board-task>
+        <div *ngIf="currentUser">
+          <app-board-task *ngFor="let task of item.tasks" [cdkDragDisabled]="currentUser!._id !== task.creator_id && currentUser!._id !== task.assignee_id" [task]="task" [authUser]="currentUser" cdkDrag></app-board-task>
+        </div>
+        <div *ngIf="!currentUser">
+          <app-board-task *ngFor="let task of item.tasks" [cdkDragDisabled]="!!task" [task]="task" [authUser]="currentUser" cdkDrag></app-board-task>
+        </div>
       </div>
     </app-board-column>
+  </div>
+  <div *ngIf="!isBoardState" class="basic-container list-tasks-container">
+    <app-board-task *ngFor="let task of allTasks" [task]="task" [authUser]="currentUser"></app-board-task>
   </div>
 </div>

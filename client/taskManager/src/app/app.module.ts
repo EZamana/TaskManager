@@ -11,7 +11,6 @@ import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatInputModule } from '@angular/material/input';
 import {MatButtonModule} from '@angular/material/button';
-import { TestComponent } from './components/test/test.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { LoginComponent } from './components/login/login.component';
 import { ButtonComponent } from './components/button/button.component';
@@ -30,13 +29,13 @@ import { CreateTaskModalComponent } from './components/create-task-modal/create-
 import {MatDialogModule} from '@angular/material/dialog';
 import {MatSelectModule} from '@angular/material/select';
 import { EditTaskModalComponent } from './components/edit-task-modal/edit-task-modal.component';
+import { UsersListComponent } from './components/users-list/users-list.component';
 
 
 
 @NgModule({
   declarations: [
     AppComponent,
-    TestComponent,
     LoginComponent,
     ButtonComponent,
     HeaderComponent,
@@ -50,7 +49,8 @@ import { EditTaskModalComponent } from './components/edit-task-modal/edit-task-m
     BoardTaskComponent,
     TruncatePipe,
     CreateTaskModalComponent,
-    EditTaskModalComponent
+    EditTaskModalComponent,
+    UsersListComponent
   ],
   imports: [
     HttpClientModule,

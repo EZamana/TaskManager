@@ -1,10 +1,11 @@
 :host {
   display: block;
+  cursor: pointer;
+  background-color: white;
 }
 
 .board-task {
   display: block;
-  background-color: white;
   padding: 15px;
   border-radius: 5px;
   border: 1px solid #C4C4C4;
