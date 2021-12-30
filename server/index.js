@@ -7,6 +7,7 @@ const taskStatusRouter = require('./routes/taskStatus.routes')
 const cors = require('cors')
 const app = express()
 const PORT = config.get('serverPort')
+const errorHandler = require('./middleware/errorHandlingMiddleware')
 
 app.use(cors({origin: '*'}));
 
@@ -15,6 +16,8 @@ app.use(express.json())
 app.use("/api/auth", authRouter)
 app.use("/api/task", taskRouter)
 app.use("/api/taskStatus", taskStatusRouter)
+
+app.use(errorHandler)
 
 const start = async () => {
   try {

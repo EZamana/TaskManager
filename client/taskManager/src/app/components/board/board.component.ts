@@ -69,10 +69,6 @@ export class BoardComponent implements OnInit {
     }
   }
 
-  indexToString(index: number) {
-    return index.toString()
-  }
-
   /*keepOriginalOrder(a: any, b: any) {
     return a.key
   }*/

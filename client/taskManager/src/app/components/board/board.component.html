@@ -6,14 +6,13 @@
   </div>
   <div class="board-items-row basic-container">
     <div>
-      <app-button *ngIf="isBoardState" [isHeightDefault]="false" [isColorDefault]="false" [btnText]="'Switch to list'" (click)="changeBoardState()"></app-button>
-      <app-button *ngIf="!isBoardState" [isHeightDefault]="false" [isColorDefault]="false" [btnText]="'Switch to board'" (click)="changeBoardState()"></app-button>
+      <app-button [isHeightDefault]="false" [isColorDefault]="false" [btnText]="isBoardState ? 'Switch to list' : 'Switch to board'" (click)="changeBoardState()"></app-button>
     </div>
     <app-button *ngIf="currentUser" [isHeightDefault]="false" [btnText]="'New task'" (click)="openCreateTaskModal()"></app-button>
   </div>
   <div *ngIf="isBoardState" class="board-tasks-container" cdkDropListGroup>
     <app-board-column *ngFor="let item of tasksData; let i=index" [columnTitle]="item.title" [tasksCounter]="item.tasks!.length">
-      <div [id]="indexToString(i)" class="board-tasks-list" [cdkDropListData]="item.tasks!" (cdkDropListDropped)="drop($event)" cdkDropList>
+      <div [id]="''+i" class="board-tasks-list" [cdkDropListData]="item.tasks!" (cdkDropListDropped)="drop($event)" cdkDropList>
         <div *ngIf="currentUser">
           <app-board-task *ngFor="let task of item.tasks" [cdkDragDisabled]="currentUser!._id !== task.creator_id && currentUser!._id !== task.assignee_id" [task]="task" [authUser]="currentUser" cdkDrag></app-board-task>
         </div>

@@ -1,6 +1,7 @@
 {
   "serverPort": 7789,
   "dbUrl": "mongodb+srv://Evgenii:753211shkaf@mytaskmanager.hqq1w.mongodb.net/MyTaskManager?retryWrites=true&w=majority",
-  "secretKey": "mySecretKey"
+  "secretKey": "mySecretKey",
+  "tokenDuration": "1d"
 }
 
