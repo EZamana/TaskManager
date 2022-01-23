@@ -22,7 +22,7 @@ export class AuthService {
   }
 
   login(email: string, password: string) {
-    return this.http.post<Response>(`http://localhost:${environment.apiPort}/api/auth/login`, {email, password})
+    return this.http.post<Response>(`${environment.apiPort}/api/auth/login`, {email, password})
       .pipe(map(user => {
         localStorage.setItem('user', JSON.stringify(user.data))
         this.userSubject.next(user.data)
@@ -31,7 +31,7 @@ export class AuthService {
   }
 
   register(email: string, password: string, name: string) {
-    return this.http.post<Response>(`http://localhost:${environment.apiPort}/api/auth/registration`, {email, password, name})
+    return this.http.post<Response>(`${environment.apiPort}/api/auth/registration`, {email, password, name})
       .pipe(map(user => {
         localStorage.setItem('user', JSON.stringify(user.data))
         this.userSubject.next(user.data)

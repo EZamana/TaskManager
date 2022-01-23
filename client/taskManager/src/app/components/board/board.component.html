@@ -11,10 +11,10 @@
     <app-button *ngIf="currentUser" [isHeightDefault]="false" [btnText]="'New task'" (click)="openCreateTaskModal()"></app-button>
   </div>
   <div *ngIf="isBoardState" class="board-tasks-container" cdkDropListGroup>
-    <app-board-column *ngFor="let item of tasksData; let i=index" [columnTitle]="item.title" [tasksCounter]="item.tasks!.length">
-      <div [id]="''+i" class="board-tasks-list" [cdkDropListData]="item.tasks!" (cdkDropListDropped)="drop($event)" cdkDropList>
+    <app-board-column *ngFor="let item of tasksData; let i=index" [columnTitle]="item.title" [tasksCounter]="item.tasks.length">
+      <div [id]="''+i" class="board-tasks-list" [cdkDropListData]="item.tasks" (cdkDropListDropped)="drop($event)" cdkDropList>
         <div *ngIf="currentUser">
-          <app-board-task *ngFor="let task of item.tasks" [cdkDragDisabled]="currentUser!._id !== task.creator_id && currentUser!._id !== task.assignee_id" [task]="task" [authUser]="currentUser" cdkDrag></app-board-task>
+          <app-board-task *ngFor="let task of item.tasks" [cdkDragDisabled]="(task.creator! && currentUser!._id !== task.creator!._id) && (task.assignee! && currentUser!._id !== task.assignee!._id)" [task]="task" [authUser]="currentUser" cdkDrag></app-board-task>
         </div>
         <div *ngIf="!currentUser">
           <app-board-task *ngFor="let task of item.tasks" [cdkDragDisabled]="!!task" [task]="task" [authUser]="currentUser" cdkDrag></app-board-task>

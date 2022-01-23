@@ -102,7 +102,7 @@ class TaskController {
       if (assigneeId) {
         assignee = await User.findOne({_id: assigneeId})
 
-        if (assignee) {
+        if (!assignee) {
           return next(ApiError.badRequest('Assignee id is is not exist'))
         }
       }

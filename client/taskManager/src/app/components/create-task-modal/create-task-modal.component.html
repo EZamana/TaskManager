@@ -27,7 +27,7 @@
       <div class="task-modal__item">
         <mat-form-field class="task-modal__item_select" appearance="fill">
           <mat-label>Assignee</mat-label>
-          <mat-select [(value)]="selectedUser" [formControl]="assigneeFormControl">
+          <mat-select [(value)]="selectedUser" [formControl]="assigneeFormControl" (openedChange)="loadUsers()">
             <mat-option *ngFor="let user of users" [value]="user">{{user.name}}</mat-option>
           </mat-select>
           <mat-error *ngIf="assigneeFormControl.hasError('required')">

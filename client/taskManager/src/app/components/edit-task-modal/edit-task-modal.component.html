@@ -31,7 +31,7 @@
     <div class="task-modal__item">
       <mat-form-field class="task-modal__item_select" appearance="fill">
         <mat-label>Assignee</mat-label>
-        <mat-select [(value)]="currentAssignee" [formControl]="assigneeFormControl">
+        <mat-select [(value)]="currentAssignee" [formControl]="assigneeFormControl" (openedChange)="loadUsers()">
           <mat-option *ngFor="let user of users" [value]="user">{{user.name}}</mat-option>
         </mat-select>
         <mat-error *ngIf="assigneeFormControl.hasError('required')">
@@ -65,11 +65,11 @@
     </div>
     <div class="task-modal__item">
       <p class="modal-subtext">Assignee</p>
-      <p class="modal-text">{{currentAssignee?.name}}</p>
+      <p class="modal-text">{{currentAssignee?.name || 'Unknown user'}}</p>
     </div>
     <div class="task-modal__item">
       <p class="modal-subtext">Reporter</p>
-      <p class="modal-text">{{taskCreator?.name}}</p>
+      <p class="modal-text">{{taskCreator?.name || 'Unknown user'}}</p>
     </div>
     <div class="task-modal__item">
       <p class="modal-subtext">Status</p>

@@ -21,8 +21,13 @@ export class TokenInterceptor implements HttpInterceptor {
   }
 
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
+    request = request.clone({
+      setHeaders: {
+        Authorization: `Bearer ${this.user ? this.user.token : this.user}`
+      }
+    })
 
-    if (this.user) {
+    /*if (this.user) {
       request = request.clone({
         setHeaders: {
           Authorization: `Bearer ${this.user.token}`
@@ -34,7 +39,7 @@ export class TokenInterceptor implements HttpInterceptor {
           Authorization: `Bearer ${this.user}`
         }
       })
-    }
+    }*/
 
     return next.handle(request);
   }

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import {TaskService} from "../../services/task.service";
 import {User} from "../../models/user";
+import {UsersService} from "../../services/users.service";
+import {Subject} from "rxjs";
 
 @Component({
   selector: 'app-users-list',
@@ -10,11 +11,19 @@ import {User} from "../../models/user";
 export class UsersListComponent implements OnInit {
   allUsers: User[] = []
 
-  constructor(private taskService: TaskService) { }
+  unsubSubject$ = new Subject()
+
+  constructor(private usersService: UsersService) { }
 
   ngOnInit(): void {
-    this.taskService.getAllUsers().subscribe(users => {
-      this.allUsers = users.data
+    this.usersService.users$.subscribe(users => {
+      this.allUsers = users
     })
+    this.usersService.updateUsers()
+  }
+
+  ngOnDestroy() {
+    this.unsubSubject$.next()
+    this.unsubSubject$.complete()
   }
 }

@@ -9,18 +9,14 @@ import {User} from "../../models/user";
   templateUrl: './board-task.component.html',
   styleUrls: ['./board-task.component.scss']
 })
-export class BoardTaskComponent implements OnInit {
+export class BoardTaskComponent {
   @Input() task!: Task
   @Input() authUser!: User | null
 
   constructor(public modal: MatDialog) { }
 
-  ngOnInit(): void {
-
-  }
-
   openEditTaskModal() {
-    const editModalRef = this.modal.open(EditTaskModalComponent,  {
+    this.modal.open(EditTaskModalComponent,  {
       data: {
         task: this.task
       },
